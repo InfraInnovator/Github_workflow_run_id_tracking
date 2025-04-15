@@ -1,0 +1,28 @@
+name: Testing workflow responses
+run-name: ${{ github.actor }} triggered workflow run - ID ${{ github.event.inputs.trigger_id || 'N/A' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      my_build_version:
+        description: 'My Build Version. Ex: 1.2.3'
+        required: true
+        default: ''
+      trigger_id:
+        description: 'Unique ID for this trigger instance'
+        required: true
+
+env:
+  AWS_CLI_TOOL_VERSION: "2.18.7"
+  PYTHON_TOOL_VERSION: "3.11.10"
+
+jobs:
+  test-workflow-running:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+        - name: Check disk space before starting
+          run: df -h
+
+# Remaining steps added here
