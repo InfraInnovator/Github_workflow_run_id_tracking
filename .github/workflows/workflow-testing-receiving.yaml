@@ -1,0 +1,41 @@
+# Demo workflow that is triggered by the 'workflow-testing-caller.yaml' workflow.
+# It receives a unique ID and includes it in a step name, allowing the caller to identify this specific run.
+
+name: Example Workflow Receiver
+run-name: Receiving workflow run triggered by ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_trigger_id:
+        description: 'Unique ID passed from the calling workflow to identify this run'
+        required: true
+        type: string
+
+jobs:
+  process_request:
+    name: Process Received Request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Adjust permissions based on actual job needs
+    steps:
+      # CRITICAL STEP: Include the received job_trigger_id in the step name.
+      # The calling workflow searches for this step name pattern within job details via the API
+      # to associate this workflow run with its triggering instance.
+      # This step should run early in the job.
+      - name: Acknowledge Trigger ID - ${{ github.event.inputs.job_trigger_id }}
+        run: |
+          echo "Received Job Trigger ID: ${{ github.event.inputs.job_trigger_id }}"
+          echo "This step's name includes the unique ID, making this run identifiable."
+
+      # Example steps for the receiving workflow
+      - name: Check disk space
+        run: df -h
+
+      - name: Simulate work
+        run: |
+          echo "Starting simulated work..."
+          sleep 60 # Simulate some processing time
+          echo "Finished simulated work."
+
+      # Add other steps required by this workflow here.

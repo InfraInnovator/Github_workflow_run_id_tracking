@@ -2,7 +2,12 @@
 
 A playground for testing and experimenting with GitHub Actions workflows.
 
-This example shows a way to track the `run_id` of a GitHub Actions workflow for use in subsequent workflows.
+This example shows a way to identidy the correct run ID when you may run multiple jobs in parallel, and you want to track the run ID of a specific job.
+
+## Prerequisites
+
+- A GitHub repository with a workflow that you want to test.
+- A GitHub Personal Access Token (PAT) with `workflow` and `repo` scopes to trigger workflows and access run details.
 
 ## Setup
 
